@@ -62,7 +62,6 @@ const handleFilterChange = (payload) => {
         v-for="item in row" 
         :key="item.num" 
         :anime="item" 
-        class="card-item"
       />
     </div>
 

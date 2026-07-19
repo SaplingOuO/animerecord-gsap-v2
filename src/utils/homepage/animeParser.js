@@ -117,7 +117,5 @@ export function chunkAnimeList(animeList, rowsPerColumn) {
     i += rowsPerColumn; // 跳到下一個 rowsPerColumn 個項目
   }
 
-  console.log('接收到的資料：',animeList);
-  console.log('壓平後的資料：',flatList);
   return result;
 }
