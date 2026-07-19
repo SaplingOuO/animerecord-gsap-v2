@@ -87,24 +87,37 @@ export function totalAnimeCount(filteredAnimeData) {
 export function getRowsPerColumn(totalCount){
   if (totalCount === 0) return 0;
 
-  // 1. 預設值（小於 8 部時的防拉長機制，最多排 3 部就換行）
-  let rowsPerColumn = Math.min(totalCount, 3); 
-
-  // 2. 只有在 8 部以上，才執行你的完美整除演算法
+  // 在 8 部以上執行開根號
   if (totalCount >= 8) {
-    // 把總數開根號並無條件捨去 = x
-    let x = Math.floor(Math.sqrt(totalCount));
-
-    // 如果除不盡，則 x - 1，重複直到除盡
-    while (x > 0) {
-      if (totalCount % x === 0) {
-        break; // 找到可以整除的因數，跳出迴圈
-      }
-      x--;
-    }
-
-    rowsPerColumn = x; 
+    return Math.floor(Math.sqrt(totalCount));
+  }else{
+    return 1
   }
-  // 回傳直行該放幾部片
-  return rowsPerColumn;
+}
+
+/**
+ * 將單層的動漫陣列，切分成每 rowsPerColumn 個一組的二維陣列
+ * @param {Array} animeList - 原始的單層動漫陣列
+ * @returns {Array} - 切分後的二維陣列
+ */
+export function chunkAnimeList(animeList, rowsPerColumn) {
+  let i = 0;
+  const result = [];
+  const flatList = [];
+  // 將篩選資料匯入壓成單層陣列
+  for(const year in animeList){
+    for(const season in animeList[year]){
+      flatList.push(...animeList[year][season]);
+    }
+  }
+
+  // 每次切 rowsPerColumn 個項目，直到把陣列跑完
+  while (i < flatList.length) {
+    result.push(flatList.slice(i, i + rowsPerColumn));
+    i += rowsPerColumn; // 跳到下一個 rowsPerColumn 個項目
+  }
+
+  console.log('接收到的資料：',animeList);
+  console.log('壓平後的資料：',flatList);
+  return result;
 }
