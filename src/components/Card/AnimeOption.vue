@@ -52,13 +52,25 @@ watch([selectedYear, selectedSeason], ([newYear, newSeason]) => {
 </template>
 
 <style scoped>
-.style{
-  width: 100%;
-  z-index: 998;
-  position: fixed;
-  bottom: 5%;
+.style {
+  position: fixed;   /* 🎯 以瀏覽器視窗為定位基準 */
+  bottom: 5%;        /* 釘在距離底部 5% 的地方 */
+  left: 50%;         /* 🎯 先把左側邊緣對齊螢幕正中間 */
+  
+  /* 🎯 藉由平移把元件自己的中心點拉回正中間，達成完美水平置中！ */
+  transform: translateX(-50%); 
+  
+  /* 🎯 寬度設為 fit-content（或 max-content），有多少內容就多寬，才不會拉長變形 */
+  width: fit-content; 
+  
+  display: flex;     /* 讓裡面的兩個選單橫向排列 */
+  gap: 10px;         /* 兩個選單之間的間距 */
+  z-index: 100000;   /* 🎯 層級調得非常高，確保絕對不會被卡片遮住 */
 }
-.el-select{
-    padding: 1em;
+
+/* 調整裡面的選單，移除原本大範圍的 padding */
+.el-select {
+  width: 10em !important;
+  padding: 0; 
 }
 </style>

@@ -15,9 +15,10 @@ const value = ref(0)
 <style scoped>
 
 .test {
-  width: 100%;
-  z-index: 999;
   position: fixed;
   bottom: 0;
+  left: 0;        /* 🎯 釘死在最左邊 */
+  width: 100vw;   /* 🎯 永遠與螢幕畫面同寬 */
+  z-index: 999;
 }
 </style>

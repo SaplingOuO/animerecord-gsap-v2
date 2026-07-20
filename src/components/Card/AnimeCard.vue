@@ -34,27 +34,27 @@ const leaveAnimation = (event) => {
 
 <template>
   <!-- 3. 🎯 綁定事件：將滑鼠移入/移出事件綁定到 <el-image> 上 -->
-  <!-- <el-image 
+  <el-image 
     class="card" 
     :src="`@/../animeImages/${props.anime.image}`" 
     fit="cover"
     lazy
     @mouseenter="enterAnimation"
     @mouseleave="leaveAnimation"
-  > -->
+  >
   <!-- 為了讓el-image部出現白底使用佔位符來做透明底替換 -->
-    <!-- <template #placeholder>
+    <template #placeholder>
       <div class="image-slot"></div>
     </template>
-  </el-image> -->
+  </el-image>
   <!-- 檢查遺失圖片 -->
-  <img
+  <!-- <img
     class="card" 
     :src="`@/../animeImages/${props.anime.image}`" 
     loading="lazy"
     @mouseenter="enterAnimation"
     @mouseleave="leaveAnimation"
-  />
+  /> -->
 </template>
 
 <style scoped>
