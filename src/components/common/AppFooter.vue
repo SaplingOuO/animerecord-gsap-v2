@@ -7,7 +7,6 @@ const value = ref(0)
 
 <template>
   <div class="test">
-    123
   </div>
   
 </template>
