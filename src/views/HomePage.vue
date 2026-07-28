@@ -61,7 +61,23 @@ onMounted(() => {
     type: "xy",
     bounds: ".page-wrapper",
     inertia: true,
-    edgeResistance: 0.65
+    edgeResistance: 0.65,
+    // 🎯 透過 GSAP 內建的 onClick 來處理點擊
+    onClick: function (e) {
+      // 尋找離點擊位置最近的 .card-container 元素
+      const cardElement = e.target.closest('.card-container');
+      
+      if (cardElement && cardElement.dataset.anime) {
+        try {
+          // 將 HTML 上的字串轉回動漫物件
+          const animeData = JSON.parse(cardElement.dataset.anime);
+          // 更新選中的動漫，這會觸發 AnimeFooter 的 watch 開啟彈窗！
+          selectedAnime.value = animeData;
+        } catch (error) {
+          console.error("解析動漫資料失敗：", error);
+        }
+      }
+    }
   });
 });
 

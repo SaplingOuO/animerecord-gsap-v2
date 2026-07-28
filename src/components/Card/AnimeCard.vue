@@ -40,11 +40,11 @@ const handleClick = () => {
 <template>
   <div 
     class="card-container"
+    :data-anime="JSON.stringify(props.anime)" 
     @mouseenter="enterAnimation"
     @mouseleave="leaveAnimation"
     @click="handleClick"
   >
-    <!-- 完全保留你原本喜歡的卡片圖片樣式 -->
     <el-image 
       class="card" 
       :src="`@/../animeImages/${props.anime.image}`" 
