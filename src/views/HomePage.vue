@@ -15,7 +15,7 @@ import {
   filterAnimeData, 
   getRowsPerColumn, 
   totalAnimeCount, 
-  chunkAnimeList 
+  chunkAnimeList
 } from '@/utils/homepage/animeParser';
 
 // 註冊 GSAP 拖曳外掛

@@ -119,3 +119,4 @@ export function chunkAnimeList(animeList, rowsPerColumn) {
 
   return result;
 }
+
