@@ -3,72 +3,82 @@ import { onMounted, ref, computed, watch } from 'vue';
 import animeData from '@/assets/gamerAcg-List.json';
 import { groupAnimeData } from '@/utils/homepage/animeParser';
 
-// 儲存轉換後的vue格式
-const groupedAnime = ref({});
-onMounted(() => {
-  // 將josn格式轉換為Vue使用格式
-  groupedAnime.value = groupAnimeData(animeData);
-});
+// ==========================================
+// 1. 📢 事件宣告 (Emits)
+// ==========================================
+const emit = defineEmits(['filter-change']);
 
-// 抓取年分，預設為'全部'
-const selectedYear = ref('全部');
+// ==========================================
+// 2. 🎯 響應式狀態 (State)
+// ==========================================
+const groupedAnime = ref({});         // 存放轉換後的動漫分類資料
+const selectedYear = ref('全部');     // 選中的年份（預設 '全部'）
+const selectedSeason = ref('全部');   // 選中的季節（預設 '全部'）
+
+// 季節下拉選單選項庫
+const seasonOptions = ['全部', '冬季', '春季', '夏季', '秋季'];
+
+// ==========================================
+// 3. 🧮 計算屬性 (Computed)
+// ==========================================
+// 動態解析現有資料中的所有年份，並倒序排列（新年份在前）
 const yearOptions = computed(() => {
-  const years = Object.keys(groupedAnime.value).reverse(); // 取得 ['2026', '2025'...]
+  const years = Object.keys(groupedAnime.value).reverse(); 
   return ['全部', ...years];
 });
 
-// 抓取季節，預設為'全部'
-const selectedSeason = ref('全部');
-const seasonOptions = ['全部', '冬季', '春季', '夏季', '秋季'];
+// ==========================================
+// 4. 👁️ 監聽器與生命週期 (Watch & Lifecycle)
+// ==========================================
+onMounted(() => {
+  // 初始化載入並轉換 JSON 資料
+  groupedAnime.value = groupAnimeData(animeData);
+});
 
-// 宣告子組件要發送的事件名稱
-const emit = defineEmits(['filter-change']);
-// watch監聽年份與季節，如有變動就觸發emit傳遞新的值
+// 監聽年份與季節變動，即時向父組件同步發送最新的篩選條件
 watch([selectedYear, selectedSeason], ([newYear, newSeason]) => {
   emit('filter-change', { year: newYear, season: newSeason });
 });
-
 </script>
 
 <template>
   <div class="style">
-    <el-select v-model="selectedYear" placeholder="Select" style="width: 240px">
-        <el-option
+    <!-- 📅 年份選擇下拉選單 -->
+    <el-select v-model="selectedYear" placeholder="選擇年份" style="width: 240px">
+      <el-option
         v-for="item in yearOptions"
         :key="item"
         :label="item"
         :value="item"
-        />
+      />
     </el-select>
-    <el-select v-model="selectedSeason" placeholder="Select" style="width: 240px">
-        <el-option
+
+    <!-- 🌸 季節選擇下拉選單 -->
+    <el-select v-model="selectedSeason" placeholder="選擇季節" style="width: 240px">
+      <el-option
         v-for="item in seasonOptions"
         :key="item"
         :label="item"
         :value="item"
-        />
-  </el-select>
+      />
+    </el-select>
   </div>
 </template>
 
 <style scoped>
+/* 🎛️ 懸浮選單容器：固定懸浮於視窗底部中央，超級層級確保不被遮檔 */
 .style {
-  position: fixed;   /* 🎯 以瀏覽器視窗為定位基準 */
-  bottom: 5%;        /* 釘在距離底部 5% 的地方 */
-  left: 50%;         /* 🎯 先把左側邊緣對齊螢幕正中間 */
-  
-  /* 🎯 藉由平移把元件自己的中心點拉回正中間，達成完美水平置中！ */
-  transform: translateX(-50%); 
-  
-  /* 🎯 寬度設為 fit-content（或 max-content），有多少內容就多寬，才不會拉長變形 */
-  width: fit-content; 
-  
-  display: flex;     /* 讓裡面的兩個選單橫向排列 */
-  gap: 10px;         /* 兩個選單之間的間距 */
-  z-index: 100000;   /* 🎯 層級調得非常高，確保絕對不會被卡片遮住 */
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%); /* 水平精準置中 */
+  width: fit-content;
+  display: flex;
+  gap: 10px;
+  z-index: 100000;             /* 極高層級，高於畫布卡片與一般遮罩 */
 }
 
-/* 調整裡面的選單，移除原本大範圍的 padding */
+/* 覆寫 Element Plus 下拉選單樣式 */
 .el-select {
   width: 10em !important;
   padding: 0; 
